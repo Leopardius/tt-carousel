@@ -1,0 +1,84 @@
+@mixin transition($arg) {
+    -webkit-transition: $arg;
+    -moz-transition: $arg;
+    -ms-transition: $arg;
+    -o-transition: $arg;
+    transition: $arg;
+}
+@mixin transform($arg) {
+    -ms-transform: $arg;
+    -moz-transform: $arg;
+    -webkit-transform: $arg;
+    -o-transform: $arg;
+    transform: $arg;
+}
+@mixin transform-origin($arg) {
+    -webkit-transform-origin: $arg;
+    -moz-transform-origin: $arg;
+    -ms-transform-origin: $arg;
+    -o-transform-origin: $arg;
+    transform-origin: $arg;
+}
+
+$desktop-width: 1200px;
+$tablet-width: 991px;
+$mobile-width: 767px;
+$mobile-450: 450px;
+
+@mixin desktop {
+    @media (max-width: #{$desktop-width}) {
+        @content;
+    }
+}
+@mixin tablet {
+    @media (max-width: #{$tablet-width}) {
+        @content;
+    }
+}
+@mixin mobile {
+    @media (max-width: #{$mobile-width}) {
+        @content;
+    }
+}
+@mixin mobile-450 {
+    @media (max-width: #{$mobile-450}) {
+        @content;
+    }
+}
+
+body{
+    margin:0;
+    padding: 0;
+}
+.content{
+    width:1200px;
+    margin: 0 auto;
+    padding: 50px 0 200px;
+    
+    @include desktop{
+        width: 100%;
+    }
+}
+
+.carousel{
+    margin: 0 50px;
+    
+    &__item{
+        width:100px;
+        height: 200px;
+        padding: 20px;
+        background: blueviolet;
+        color: #fff;
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+        overflow: hidden;
+        border:2px solid #fff;
+        border-right:1px solid #fff;
+        border-left:1px solid #fff;
+    }
+    &__block{
+        margin: 20px 0;
+        font-size: 25px;
+    }
+}
