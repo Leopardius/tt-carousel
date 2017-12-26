@@ -63,7 +63,8 @@ Carousel. Responsive. Webpack compatibility. Support touch screen.
         });
     ```
     * Carousel waite until DOMContentLoaded event. If you miss event you can call `carouselInstance.init()` manually.
-3 html structure. Use any class name as you want. You have to pass class name of container to options. In this particular case { container: document.querySelector('.carousel') }
+
+3. html structure. Use any class name as you want. You have to pass class name of container to options. In this particular case `{ container: document.querySelector('.carousel') }`
     ```html
         <div class="carousel">
             <div class="carousel__item">1</div>
