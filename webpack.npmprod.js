@@ -1,15 +1,19 @@
 const webpack = require('webpack');
 const path = require('path');
+const merge = require('webpack-merge');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const common = require('./webpack.common.js');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-
+let libraryName = 'tt';
 
 module.exports = {
     entry: {
-        app: './src/js/index.js'
+        app: './src/js/tt-carousel/index.js'
     },
+    devtool: 'source-map',
     module: {
         rules: [
             { 
@@ -50,20 +54,25 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin([
-            'dist/*.js',
-            'dist/*.css',
-            'dist/*.html'
-        ]),
-        new ExtractTextPlugin('[name].[chunkhash].min.css'),
+        new CleanWebpackPlugin(['tt-carousel/*']),
+        new ExtractTextPlugin(libraryName + '.min.css'),
         new HtmlWebpackPlugin({
             title: 'Tt-carousel',
             template: './src/index.html'
         }),
-        new webpack.HashedModuleIdsPlugin()
+        new webpack.HashedModuleIdsPlugin(),
+        new UglifyJSPlugin({
+            sourceMap: true
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        })
     ],
     output: {
-        filename: '[name].[chunkhash].bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        filename: libraryName + '.min.js',
+        path: path.resolve(__dirname, 'tt-carousel'),
+        library: libraryName,
+        libraryTarget: 'umd',
+        umdNamedDefine: true
     }
 };

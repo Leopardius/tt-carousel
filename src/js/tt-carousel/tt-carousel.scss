@@ -1,5 +1,15 @@
 .tt-carousel{
     position: relative;
+    // float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    div{
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
     &__narrow-container{
         overflow: hidden;
@@ -14,7 +24,9 @@
     }
     &__item{
         float: left;
+        display: block;
         overflow: hidden;
+        min-height: 1px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;

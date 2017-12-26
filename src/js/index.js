@@ -1,9 +1,9 @@
+
 import './tt-carousel/tt-carousel.scss';
-import '../scss/style.scss';
+// import {Carousel} from 'tt-carousel';
+// import '../scss/tt.min.css';
 
-import Slider from './tt-carousel/indexCarousel';
-
-new Slider({
+new Carousel({
     slidesToShow:5,
     container: document.querySelector('.carousel'),
     responsive: [
@@ -12,8 +12,16 @@ new Slider({
             slidesToShow:4,
         },
         {
+            breakpoint: 991,
+            slidesToShow:3,
+        },
+        {
             breakpoint: 768,
-            slidesToShow:1,
+            slidesToShow:2,
+        },
+        {
+            breakpoint: 450,
+            slidesToShow:1
         }
     ]
 });

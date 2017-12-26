@@ -50,7 +50,7 @@ export default class Tt{
             current:0
         }; 
 
-        document.addEventListener("DOMContentLoaded", this._init.bind(this));
+        document.addEventListener("DOMContentLoaded", this.init.bind(this));
     }
 
     _makeActualSettings(defaultSettings, options){
@@ -79,7 +79,7 @@ export default class Tt{
         return newSettings;
     }
 
-    _init(){
+    init(){
         if( !this._settings.container ){
             this._logError('need DOM element - container for carousel');
             return;
@@ -105,13 +105,17 @@ export default class Tt{
             return;
         }
             
-        this._calcWidth(container);
-        this._styleContainer(container);
+        
+        container.classList.add('tt-carousel');
+
         this._wideContainer = document.createElement('div');
-        this._styleWideContainer(this._wideContainer);
+        this._wideContainer.className = 'tt-carousel__wide-container';
+
         this._narrowContainer = document.createElement('div');
-        this._styleNarrowContainer(this._narrowContainer);
+        this._narrowContainer.className = 'tt-carousel__narrow-container';
+
         this._wrapSlides(container, this._wideContainer, this._narrowContainer);
+        
         this._styleSlides(this._wideContainer.children);
 
         let getState = this.getState.bind(this);
@@ -233,7 +237,6 @@ export default class Tt{
         if(obj.propName === 'current'){
             self.goToSlide();
         }
-        console.log(self._state);
     }
 
 
@@ -267,11 +270,7 @@ export default class Tt{
         container.appendChild(dots);
     }
 
-    _calcWidth(container){
-        this._narrowWidth = container.clientWidth;
-        this._slideWidth = parseInt(this._narrowWidth / this._settings.slidesToShow, 10);
-        this._wideWidth = this._slideWidth * container.children.length;
-    }
+    
 
     _wrapSlides(container, wideContainer, narrowContainer){
         var slides = container.innerHTML;
@@ -281,30 +280,36 @@ export default class Tt{
         container.appendChild(narrowContainer);
     }
 
-    _styleContainer(container){
-        container.classList.add('tt-carousel');
-    }
-
     _clearContainer(container){
         container.classList.remove('tt-carousel');
     }
 
-    _styleNarrowContainer(narrowContainer){
-        narrowContainer.className = 'tt-carousel__narrow-container';
+    _calcWidth(container){
+        this._narrowWidth = container.offsetWidth || container.offsetWidth || container.clientWidth;
+        this._slideWidth = this._narrowWidth / this._settings.slidesToShow;
+        this._wideWidth = this._slideWidth * this.getState('slidesQuantity');
     }
 
-    _styleWideContainer(wideContainer){
-        wideContainer.className = 'tt-carousel__wide-container';
-        wideContainer.style.width = this._wideWidth + 'px';
+    _beforeCalcWidth(slides){
+        for(var i=0; i<slides.length; i++){
+            slides[i].classList.add('tt-carousel__item');
+            slides[i].style.width = '50px';
+        }
+        this._wideContainer.style.width = '50000px';
     }
+
 
     _styleSlides(slides){
+        
+        this._beforeCalcWidth(slides);
+        this._calcWidth(this._settings.container);
+        
+        this._wideContainer.style.width = this._wideWidth + 'px';
+
         for(var i=0; i<slides.length; i++){
-            var slide = slides[i];
-            slide.className = slide.className ? slide.className + ' tt-carousel__item' : 'tt-carousel__item';
-            slide.style.width = this._slideWidth + 'px';
-            slide.style.minHeight = '1px';
+            slides[i].style.width = this._slideWidth + 'px';
         }
+        
     }
 
     _logError(error){

@@ -2,10 +2,11 @@
   "name": "tt-carousel",
   "version": "1.0.0",
   "description": "\"# Carousel. Responsive. Webpack compatibility.\"",
-  "main": "index.js",
+  "main": "tt-carousel/tt.min.js",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "prod": "webpack --config webpack.prod.js",
+    "npmprod": "webpack --config webpack.npmprod.js",
     "test": "mocha --require babel-core/register --colors ./src/js/**/*.spec.js",
     "test:watch": "mocha --require babel-core/register --colors -w ./src/js/**/*.spec.js"
   },
@@ -18,7 +19,9 @@
     "carousel",
     "responsive",
     "webpack",
-    "es6"
+    "es6",
+    "touch",
+    "mobile"
   ],
   "license": "MIT",
   "dependencies": {},
