@@ -79,8 +79,8 @@ Carousel. Responsive. Webpack compatibility. Support touch screen.
 
 ## Responsive
 
-Carousel can change options based on responsive array. It can be destroed and rebuilded by boolean option `initiate`.
-Here on wide screen carousel is not builded. Between 1200px and 991px it is builded and less then 991px destroed.
+Carousel can change options based on responsive array. It can be destroed and rebuilt by boolean option `initiate`.
+Here on wide screen carousel is not built. Between 1200px and 991px it is built and less then 991px destroed.
 ```js
         let carouselInstance = new tt.Carousel({
             initiate:false,
