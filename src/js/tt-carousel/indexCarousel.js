@@ -194,12 +194,26 @@ export default class Tt{
     }
 
     _addResizeListener(){
+        this.sensitivityWindowWidth = window.innerWidth;
+
         let resizeListener = debounce(function(){
+            if( this._sensitivity() ) return;
             this._update();
         },
         1000);
 
         window.addEventListener('resize', resizeListener.bind(this));
+    }
+
+
+    _sensitivity(){
+        let threshold = 10; // px
+        if( Math.abs(window.innerWidth - this.sensitivityWindowWidth) > threshold ){
+            this.sensitivityWindowWidth = window.innerWidth;
+            return false;
+        }else{
+            return true;
+        }
     }
 
 

@@ -1,7 +1,4 @@
-
-import './tt-carousel/tt-carousel.scss';
-// import {Carousel} from 'tt-carousel';
-// import '../scss/tt.min.css';
+import { Carousel } from './tt-carousel/index.js';
 
 new Carousel({
     slidesToShow:5,
