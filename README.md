@@ -96,4 +96,39 @@ Here on wide screen carousel is not built. Between 1200px and 991px it is built 
                 }
             ]
         });
-    ```
+```
+
+
+## Options
+
+### container (required)
+assign result of `document.querySelector(className)`, where className of parent div of slides. For example
+ `container: document.querySelector('.carousel')`
+```html
+    <div class="carousel">
+        <div class="carousel__item">1</div>
+        <div class="carousel__item">2</div>
+        <div class="carousel__item">3</div>
+        <div class="carousel__item">4</div>
+        <div class="carousel__item">5</div>
+        <div class="carousel__item">6</div>
+    </div>
+```
+
+### initiate (default: true)
+if `initiate:false` then carousel is destroed
+
+### responsive (default: [] empty array)
+`responsive` is array of objects. Each object must have `breakpoint` property. Only one object will be selected and merged with options (if window width less then `breakpoint`).
+
+### arrows (default: true)
+enable left/right buttons (div, which you may style by background)
+
+### dots (default: true)
+enable dots navigaton
+
+### slidesToShow (default: 1)
+quantity of slides in view
+
+### speed (default: 300)
+transition speed (ms)

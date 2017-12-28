@@ -39,8 +39,8 @@ export default class Arrows{
     destroy(leftArrow, rightArrow){
         this.leftArrow.removeEventListener('click', this._bindedHandlerLeftClick);
         this.rightArrow.removeEventListener('click', this._bindedHandlerRightClick);
-        if(leftArrow) leftArrow.remove();
-        if(rightArrow) rightArrow.remove();
+        this.leftArrow.remove();
+        this.rightArrow.remove();
     }
 
     _handlerLeftClick(){

@@ -1,5 +1,31 @@
 export default function () {
 
+    (function(e){ 
+        e.matches || (e.matches=e.matchesSelector||function(selector){
+            var matches = document.querySelectorAll(selector), th = this;
+            return Array.prototype.some.call(matches, function(e){
+                return e === th;
+            });
+        });   
+    })(Element.prototype);
+    
+
+
+    // htmlelement.closest(css)
+    (function(e){ 
+        e.closest = e.closest || function(css){ 
+          var node = this;
+         
+          while (node) { 
+             if (node.matches(css)) return node; 
+             else node = node.parentElement; 
+          } 
+          return null; 
+        } 
+    })(Element.prototype);
+
+
+    // analog lodash's _.get()
     window.getByPath = function(theObject, path, separator) {
         try {
             separator = separator || '.';
@@ -18,6 +44,8 @@ export default function () {
         }   
     }
 
+
+    // Object.assign
     if (!Object.assign) {
         Object.defineProperty(Object, 'assign', {
             enumerable: false,

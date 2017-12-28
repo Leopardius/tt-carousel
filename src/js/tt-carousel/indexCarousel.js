@@ -1,5 +1,6 @@
 import debounce from './debounce';
 import Arrows from './arrows';
+import Dots from './dots';
 import polyfill from './polyfill';
 import { cssTranslateX, cssTransition } from './transformTranslate';
 import MobileTransition from './mobile';
@@ -20,7 +21,6 @@ export default class Tt{
      * @param {number} [options.speed=300] transition speed
      * @param {boolean} [options.dots=true] enable dots navigaton
      * @param {boolean} [options.arrows=true] enable right/left arrows
-     * @param {boolean} [options.infinite=false] enable infinite transition
      */
     constructor(options){
         this._options = options;
@@ -49,6 +49,12 @@ export default class Tt{
             slidesQuantity:0,
             current:0
         }; 
+
+        this._plugins = []; // instances. All have destroy method
+        this._privateCallbacks = {
+            afterCurrentChange: [] // invoke after change current property of state with value of current slide as arg
+        }
+        
 
         document.addEventListener("DOMContentLoaded", this.init.bind(this));
     }
@@ -128,9 +134,19 @@ export default class Tt{
                 infinite: stg.infinite
             });
             this._insertArrows(container, this._arrowsInstance);
+            this._plugins.push( this._arrowsInstance );
         }
+
         if( stg.dots ){
-            // this._addDots(container);
+            this._dotsInstance = new Dots({
+                getState: getState,
+                setState: setState,
+                slidesToShow: stg.slidesToShow
+            });
+            this._dotsInstance.styleDots( getState('current') );
+            this._insertDots(container, this._dotsInstance);
+            this._plugins.push( this._dotsInstance );
+            this._privateCallbacks.afterCurrentChange.push( this._dotsInstance.styleDots )
         }
 
         this._mobileInstance = new MobileTransition(
@@ -141,6 +157,8 @@ export default class Tt{
                 infinite: stg.infinite
             }
         );
+        this._plugins.push( this._mobileInstance );
+
     }
 
     _update(){
@@ -152,27 +170,21 @@ export default class Tt{
     }
 
     _destroy(){
-        if(this._arrowsInstance){
-            this._arrowsInstance.destroy(this._arrowsInstance.left, this._arrowsInstance.right);
-            this._arrowsInstance = undefined;
-        }
-
-        if(this._dotsInstance){
-            this._dotsInstance.destroy();
-            this._dotsInstance = undefined;
-        }
-
-        if(this._mobileInstance){
-            this._mobileInstance.destroy();
-            this._mobileInstance = undefined;
-        }
-
+        this._plugins.forEach( (instance) => {
+            instance.destroy();
+        })
+        this._plugins = [];
+        this._arrowsInstance = undefined;
+        this._dotsInstance = undefined;
+        this._mobileInstance = undefined;
+        
         this._settings.container.innerHTML = this._originalSlides;
         this._clearContainer(this._settings.container);
 
+        this._privateCallbacks.afterCurrentChange = [];
     }
 
-    _destroyForever(){
+    destroyForever(){
 
     }
 
@@ -243,14 +255,17 @@ export default class Tt{
         switch(obj.propName){
             case 'current':
                 obj.value = this._validateCurrent(obj.value);
+                self._state[obj.propName] = obj.value;
+                self.goToSlide();
+                self._privateCallbacks.afterCurrentChange.forEach( (item) => {
+                    item( self._state.current );
+                })
                 break;
+            default:
+                self._state[obj.propName] = obj.value;
         }
 
-        self._state[obj.propName] = obj.value;
 
-        if(obj.propName === 'current'){
-            self.goToSlide();
-        }
     }
 
 
@@ -271,17 +286,9 @@ export default class Tt{
         container.appendChild(arrowsObj.rightArrow);
     }
 
-    _addDots(container){
-        if( !this._dots ) return;
-        var dots = document.createElement('div');
-        dots.className = 'tt-carousel__dots';
-        var quantity = this._wideContainer.children.length;
-        for(var i=0; i<quantity; i++){
-            var dot = document.createElement('div');
-            dot.className = 'tt-carousel__dots-item';
-            dots.appendChild(dot);
-        }
-        container.appendChild(dots);
+    _insertDots(container, dots){
+        if( !dots ) return;
+        container.appendChild(dots.dots);
     }
 
     
